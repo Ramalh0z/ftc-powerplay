@@ -92,8 +92,7 @@ public class FTC_3 extends OpMode {
         atuadores[2].setPower(gamepad2.a ? 0.5 : 0.0);
 
         // apenas debug
-        RobotLogger.debugMotorPower(telemetry, motors);
-        RobotLogger.debugMotorPower(telemetry, atuadores);
+        RobotLogger.showSimpleMotorInfo(telemetry, motors);
         RobotLogger.debugControles(telemetry, gamepad1, gamepad2);
     }
 }

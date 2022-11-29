@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode.teleop;
 
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.config.Config;
-import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -11,12 +10,11 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.teamcode.modules.MovementModule;
+import org.firstinspires.ftc.teamcode.hardware.RobotConfiguration;
+import org.firstinspires.ftc.teamcode.hardware.RobotConstants;
 import org.firstinspires.ftc.teamcode.utils.MathUtils;
 import org.firstinspires.ftc.teamcode.utils.RobotLogger;
 
-import java.lang.reflect.Array;
-import java.util.Arrays;
 import java.util.List;
 
 @Config
@@ -32,28 +30,11 @@ public class FTC_4 extends OpMode {
 
     private List<LynxModule> hubs;
 
-    // Constante
-    static final double corretor_joystic_x = 1.1;
-
-    // Variáveis
-    public static double usoDasRodas = 1;
-    public static double usoDasGarras = 0.5;
-    public static double usoDoMotorCentro = 0.6;
-
-    public static double posiçãoGarraA_Fechada = 0.8;
-    public static double posiçãoGarraA_Solta = 0.6;
-
-    public static double posiçãoGarraB_Fechada = 0.3;
-    public static double posiçãoGarraB_Solta = 0.15;
-
-    public static double posiçãoInicialMão = 0.9;
-    public static double posiçãoLimiteInferiorMão = 0.65;
-
     @Override
     public void init() {
 
         // setup inicial do ftc-dashboard
-        telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
+        //telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
         // configura os bulk reads para um "cache" de valores automático
         // para mais informações, veja: https://gm0.org/en/latest/docs/software/tutorials/bulk-reads.html
@@ -111,7 +92,7 @@ public class FTC_4 extends OpMode {
 
         // inputs da movimentação
         double y    = gamepad1.left_stick_y;  // Note: pushing stick forward gives negative value
-        double x    = gamepad1.left_stick_x * corretor_joystic_x;
+        double x    = gamepad1.left_stick_x * RobotConstants.kCorretorJoystickX;
         double giro = -gamepad1.right_stick_x;
 
         // limita os motores na faixa dos [-1, 1]
@@ -129,29 +110,29 @@ public class FTC_4 extends OpMode {
         motors[3].setPower(rightBackPower);
 
         // Gira a base do robô
-        atuadores[0].setPower(-gamepad2.right_stick_x * usoDoMotorCentro);
+        atuadores[0].setPower(-gamepad2.right_stick_x * RobotConfiguration.usoDoMotorCentro);
 
-        double controlPower = -gamepad2.left_stick_y * usoDasGarras;
+        double controlPower = -gamepad2.left_stick_y * RobotConfiguration.usoDasGarras;
         atuadores[2].setPower(controlPower);
         atuadores[3].setPower(controlPower);
 
         // segurar o cone
         if(gamepad2.x) {
-            garraA.setPosition(posiçãoGarraA_Fechada);
-            garraB.setPosition(posiçãoGarraB_Fechada);
+            garraA.setPosition(RobotConfiguration.posiçãoGarraA_Fechada);
+            garraB.setPosition(RobotConfiguration.posiçãoGarraB_Fechada);
 
         } else {
-            garraA.setPosition(posiçãoGarraA_Solta);
-            garraB.setPosition(posiçãoGarraB_Solta);
+            garraA.setPosition(RobotConfiguration.posiçãoGarraA_Solta);
+            garraB.setPosition(RobotConfiguration.posiçãoGarraB_Solta);
         }
 
         if(gamepad2.right_trigger > 0.0) {
             double movimento_mao = MathUtils.Clamp(gamepad2.right_trigger,
-                    posiçãoInicialMão, posiçãoLimiteInferiorMão);
+                    RobotConfiguration.posiçãoInicialMão, RobotConfiguration.posiçãoLimiteInferiorMão);
             mao.setPosition(movimento_mao);
 
         } else {
-            mao.setPosition(posiçãoInicialMão);
+            mao.setPosition(RobotConfiguration.posiçãoInicialMão);
         }
 
         telemetry.addData("Motor DF", motors[0].getPower());

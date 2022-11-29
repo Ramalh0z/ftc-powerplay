@@ -1,11 +1,11 @@
-package org.firstinspires.ftc.teamcode.modules;
+package org.firstinspires.ftc.teamcode.subsystems;
 
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 
 import org.firstinspires.ftc.robotcore.external.navigation.Position;
-import org.firstinspires.ftc.teamcode.utils.Pose2D;
 
-public final class OdometryModule {
+@Deprecated
+final class OdometryModule {
     /* 
      * ODOMETRIA: é a técnica utilizada para medir distâncias algum dispositivo (no nosso caso, os encoders)
      *
@@ -40,7 +40,7 @@ public final class OdometryModule {
     double ultimaPosicaoX = 0.0;
     double deltaPosicaoX = 0.0;
 
-    public void odometria2(Pose2D poseInicial, Pose2D poseFinal, DcMotorEx[] motores)
+    public void odometria2(DcMotorEx[] motores)
     {
         // OBS: temos que contar com a distancia dos motores em relação ao centro
         // então dividi em 2 grupos: grupo frente e grupo trás
@@ -64,7 +64,7 @@ public final class OdometryModule {
         deltaDosEncoders[3] = encoders[3] - ultimosEncoders[3];
 
         // posição relativa do robo
-        deltaPosicaoX = poseFinal.x - poseInicial.x;
+        //deltaPosicaoX = poseFinal.x - poseInicial.x;
 
         // estimamos a orientação do robô neste deltaTheta
         double deltaTheta = CM_POR_TICK * (deltaDosEncoders[0] - deltaDosEncoders[1]) / DISTANCIA_HORIZONTAL_MOTORES;
@@ -85,32 +85,32 @@ public final class OdometryModule {
         double deltaYTrás = CM_POR_TICK * ((deltaDosEncoders[0] - deltaDosEncoders[1]) + deltaPosicaoX) * DH / DISTANCIA_HORIZONTAL_MOTORES;
 
         // theta ao longo do movimento:
-        double theta = poseInicial.theta + (deltaTheta / 2.0);
+        //double theta = poseInicial.theta + (deltaTheta / 2.0);
 
         // poses da frente e de trás:
-        Pose2D targetPoseFrente = new Pose2D(0.0, 0.0, 0.0);
-        targetPoseFrente.theta += deltaTheta;
-        targetPoseFrente.x += deltaX * Math.cos(theta) - deltaYFrente * Math.sin(theta);
-        targetPoseFrente.y += deltaX * Math.sin(theta) + deltaYFrente * Math.cos(theta);
+        //Pose2D targetPoseFrente = new Pose2D(0.0, 0.0, 0.0);
+        //targetPoseFrente.theta += deltaTheta;
+        //targetPoseFrente.x += deltaX * Math.cos(theta) - deltaYFrente * Math.sin(theta);
+        //targetPoseFrente.y += deltaX * Math.sin(theta) + deltaYFrente * Math.cos(theta);
 
-        Pose2D targetPoseTras = new Pose2D(0.0,0.0,0.0);
-        targetPoseTras.theta += deltaTheta;
-        targetPoseTras.x += deltaX * Math.cos(theta) - deltaYTrás * Math.sin(theta);
-        targetPoseTras.y += deltaX * Math.sin(theta) + deltaYTrás * Math.cos(theta);
+        //Pose2D targetPoseTras = new Pose2D(0.0,0.0,0.0);
+        //targetPoseTras.theta += deltaTheta;
+        //targetPoseTras.x += deltaX * Math.cos(theta) - deltaYTrás * Math.sin(theta);
+        //targetPoseTras.y += deltaX * Math.sin(theta) + deltaYTrás * Math.cos(theta);
 
         // fim???
-        double verticalFrente = (targetPoseFrente.y * velocidade);
-        double verticalTras = (targetPoseTras.y * velocidade);
-        double lateral = (targetPoseFrente.x * velocidade);
-        double giro = (targetPoseFrente.theta * velocidade);
+        //double verticalFrente = (targetPoseFrente.y * velocidade);
+        //double verticalTras = (targetPoseTras.y * velocidade);
+        //double lateral = (targetPoseFrente.x * velocidade);
+        //double giro = (targetPoseFrente.theta * velocidade);
 
         // grupo frente
-        motores[0].setVelocity(verticalFrente + lateral + giro);
-        motores[1].setVelocity(verticalFrente - lateral - giro);
+        //motores[0].setVelocity(verticalFrente + lateral + giro);
+        //motores[1].setVelocity(verticalFrente - lateral - giro);
 
         // grupo trás
-        motores[2].setVelocity(verticalTras + lateral - giro);
-        motores[3].setVelocity(verticalTras - lateral + giro);
+        //motores[2].setVelocity(verticalTras + lateral - giro);
+        //motores[3].setVelocity(verticalTras - lateral + giro);
 
         // salva os ultimos valores
         ultimosEncoders[0] = encoders[0];
@@ -149,7 +149,7 @@ public final class OdometryModule {
         deltaPosicaoX = posicaoX - ultimaPosicaoX;
     }
 
-    public void moverComOdometria(Pose2D poseInicial, Pose2D poseAlvo, double raio, DcMotorEx[] motores) {
+    public void moverComOdometria(DcMotorEx[] motores) {
 
         // TODO: testar a conversão de ticks (leituras) para centimetros
         // calcula os arcos que serão percorridos
@@ -197,15 +197,15 @@ public final class OdometryModule {
         // estimamos a coordenada X, para o par de motores da frente e tbm os de trás
         double deltaXFrente = 2 * (deltaPosicaoX / 2.0 + DV) * meioAnguloTheta;
 
-        Pose2D targetPoseFrente = new Pose2D(0.0, 0.0, 0.0);
-        targetPoseFrente.theta += deltaTheta;
-        targetPoseFrente.x += deltaXFrente;
-        targetPoseFrente.y += deltaYFrente;
+        //Pose2D targetPoseFrente = new Pose2D(0.0, 0.0, 0.0);
+        //targetPoseFrente.theta += deltaTheta;
+        //targetPoseFrente.x += deltaXFrente;
+        //targetPoseFrente.y += deltaYFrente;
 
-        Pose2D targetPoseTras = new Pose2D(0.0,0.0,0.0);
-        targetPoseTras.theta += deltaTheta;
-        targetPoseTras.x += deltaXFrente; // talvez funcione??
-        targetPoseTras.y += deltaYTrás;
+        //Pose2D targetPoseTras = new Pose2D(0.0,0.0,0.0);
+        //targetPoseTras.theta += deltaTheta;
+        //targetPoseTras.x += deltaXFrente; // talvez funcione??
+        //targetPoseTras.y += deltaYTrás;
 
         // salva os ultimos valores
         ultimosEncoders[0] = encoders[0];
