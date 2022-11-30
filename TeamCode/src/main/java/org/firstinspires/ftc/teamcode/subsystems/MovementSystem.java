@@ -1,12 +1,8 @@
 package org.firstinspires.ftc.teamcode.subsystems;
 
-import androidx.annotation.NonNull;
-
-import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.teamcode.hardware.DestemidosHardware;
-import org.firstinspires.ftc.teamcode.hardware.RobotConfiguration;
 import org.firstinspires.ftc.teamcode.hardware.RobotConstants;
 
 /*
@@ -24,29 +20,36 @@ public final class MovementSystem {
 
     public static void controleTank(Gamepad driver, DestemidosHardware robot) {
         double joystick_y  = -driver.left_stick_y;
-        double giro        = driver.right_stick_x;
+        double giro        = -driver.right_stick_x;
 
-        robot.motorDireitaFrente.setPower(joystick_y - giro);
-        robot.motorDireitaTras.setPower(joystick_y - giro);
-        robot.motorEsquerdaFrente.setPower(joystick_y + giro);
-        robot.motorEsquerdaTras.setPower(joystick_y + giro);
+        double denominador = Math.max( Math.abs(joystick_y) + Math.abs(giro), 1);
+
+        double direitaFrentePower   = (joystick_y - giro) / denominador;
+        double direitaTrasPower     = (joystick_y - giro) / denominador;
+        double esquerdaFrentePower  = (joystick_y + giro) / denominador;
+        double esquerdaTrasPower    = (joystick_y + giro) / denominador;
+
+        robot.motorDireitaFrente.setPower(direitaFrentePower);
+        robot.motorDireitaTras.setPower(direitaTrasPower);
+        robot.motorEsquerdaFrente.setPower(esquerdaFrentePower);
+        robot.motorEsquerdaTras.setPower(esquerdaTrasPower);
     }
     // Movimentação padrão e mais refinada do nosso controle, baseada no vídeo
     // extremamente didático do Gavin Ford: https://youtu.be/gnSW2QpkGXQ
     public static void controleOmnidirecionalClassico(Gamepad driver, DestemidosHardware robot)
     {
         double joystick_y  = -driver.left_stick_y;
-        double joystick_x  = driver.left_stick_x * RobotConstants.kCorretorJoystickX;
-        double giro        = driver.right_stick_x;
+        double joystick_x  = -driver.left_stick_x * RobotConstants.kCorretorJoystickX;
+        double giro        = -driver.right_stick_x;
 
         // o denominador sempre será a maior força (valor absoluto) entre os 4 motores, ou equivalente a 1.
         // isso permite que todos mantenham a mesma taxa, mesmo que um motor ultrapasse os limites [-1, 1]
         double denominador = Math.max( Math.abs(joystick_y) + Math.abs(joystick_x) + Math.abs(giro), 1);
 
-        double direitaFrentePower = (joystick_y - joystick_x - giro) / denominador;
-        double direitaTrasPower = (joystick_y + joystick_x - giro) / denominador;
-        double esquerdaFrentePower = (joystick_y + joystick_x + giro) / denominador;
-        double esquerdaTrasPower = (joystick_y - joystick_x + giro) / denominador;
+        double direitaFrentePower   = (joystick_y - joystick_x - giro) / denominador;
+        double direitaTrasPower     = (joystick_y + joystick_x - giro) / denominador;
+        double esquerdaFrentePower  = (joystick_y + joystick_x + giro) / denominador;
+        double esquerdaTrasPower    = (joystick_y - joystick_x + giro) / denominador;
 
         robot.motorDireitaFrente.setPower(direitaFrentePower);
         robot.motorDireitaTras.setPower(direitaTrasPower);

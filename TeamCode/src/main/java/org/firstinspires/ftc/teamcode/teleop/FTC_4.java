@@ -109,13 +109,6 @@ public class FTC_4 extends OpMode {
         motors[1].setPower(leftBackPower);
         motors[3].setPower(rightBackPower);
 
-        // Gira a base do robô
-        atuadores[0].setPower(-gamepad2.right_stick_x * RobotConfiguration.usoDoMotorCentro);
-
-        double controlPower = -gamepad2.left_stick_y * RobotConfiguration.usoDasGarras;
-        atuadores[2].setPower(controlPower);
-        atuadores[3].setPower(controlPower);
-
         // segurar o cone
         if(gamepad2.x) {
             garraA.setPosition(RobotConfiguration.posiçãoGarraA_Fechada);

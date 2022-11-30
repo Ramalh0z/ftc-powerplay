@@ -41,9 +41,9 @@ public class DestemidosHardware {
     public DcMotorEx motorBraçoB;
 
     // Servos
-    private Servo servoMão;
-    private Servo servoGarraA;
-    private Servo servoGarraB;
+    public Servo servoMão;
+    public Servo servoGarraA;
+    public Servo servoGarraB;
 
 
     // utilitário
@@ -67,6 +67,8 @@ public class DestemidosHardware {
         servoGarraB = hardwareMap.get(Servo.class, "garraB"); // porta 5 - controlhub
 
         // precisamos inverter apenas os motores da esquerda
+        motorDireitaFrente.setDirection(DcMotorSimple.Direction.FORWARD);
+        motorDireitaTras.setDirection(DcMotorSimple.Direction.FORWARD);
         motorEsquerdaFrente.setDirection(DcMotorSimple.Direction.REVERSE);
         motorEsquerdaTras.setDirection(DcMotorSimple.Direction.REVERSE);
 
