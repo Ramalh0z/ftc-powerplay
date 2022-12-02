@@ -6,8 +6,8 @@ import com.acmerobotics.dashboard.config.Config;
 public final class RobotConfiguration {
 
     // Base
-    public static double usoDasRodas = 1;
-    public static double usoDasGarras = 0.5;
+    public static double usoDasRodas = 0.7;
+    public static double usoDasGarras = 0.7;
     public static double usoDoMotorCentro = 0.6;
 
     // Servos
