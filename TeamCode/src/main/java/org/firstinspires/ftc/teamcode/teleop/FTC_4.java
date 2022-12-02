@@ -32,11 +32,7 @@ public class FTC_4 extends LinearOpMode {
             MovementSystem.controleOmnidirecionalClassico(gamepad1, robot);
 
             // controles do braço e da mão
-            robot.motorCentro.setPower(-gamepad2.right_stick_x * RobotConfiguration.usoDoMotorCentro);
-
-            double controlPower = gamepad2.left_stick_y * RobotConfiguration.usoDasGarras;
-            robot.motorBraçoA.setPower(controlPower);
-            robot.motorBraçoB.setPower(controlPower);
+            ArmSystem.movimentarBraço(gamepad2, robot);
 
             GripSystem.coletarCones(gamepad2, robot);
         }
