@@ -4,7 +4,6 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.teamcode.hardware.DestemidosHardware;
 import org.firstinspires.ftc.teamcode.hardware.RobotConfiguration;
-import org.firstinspires.ftc.teamcode.utils.MathUtils;
 
 public final class GripSystem {
     public static void coletarCones(Gamepad player2, DestemidosHardware robot)
@@ -24,14 +23,8 @@ public final class GripSystem {
         robot.servoGarraB.setPosition(garraB_position);
 
         double current_mao_position;
-        if (player2.right_trigger > 0.0) {
-            double movimento_mao = MathUtils.Clamp(
-                    player2.right_trigger,
-                    RobotConfiguration.posiçãoInicialMão,
-                    RobotConfiguration.posiçãoLimiteInferiorMão
-            );
-
-            current_mao_position = movimento_mao;
+        if (player2.left_bumper) {
+            current_mao_position = RobotConfiguration.posiçãoLimiteInferiorMão;
 
         } else {
             current_mao_position = RobotConfiguration.posiçãoInicialMão;

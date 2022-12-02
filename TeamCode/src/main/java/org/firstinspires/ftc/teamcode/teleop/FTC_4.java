@@ -1,11 +1,13 @@
 package org.firstinspires.ftc.teamcode.teleop;
 
+import android.graphics.Color;
+
 import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 import org.firstinspires.ftc.teamcode.hardware.DestemidosHardware;
-import org.firstinspires.ftc.teamcode.hardware.RobotConfiguration;
+import org.firstinspires.ftc.teamcode.subsystems.ArmSystem;
 import org.firstinspires.ftc.teamcode.subsystems.GripSystem;
 import org.firstinspires.ftc.teamcode.subsystems.MovementSystem;
 
@@ -22,6 +24,9 @@ public class FTC_4 extends LinearOpMode {
         robot = new DestemidosHardware(hardwareMap);
         hubs = hardwareMap.getAll(LynxModule.class);
 
+        hubs.get(0).setConstant(Color.MAGENTA);
+        hubs.get(1).setConstant(Color.MAGENTA);
+
         waitForStart();
         while (opModeIsActive()) {
             for (LynxModule hub : hubs) {
@@ -35,6 +40,13 @@ public class FTC_4 extends LinearOpMode {
             ArmSystem.movimentarBraço(gamepad2, robot);
 
             GripSystem.coletarCones(gamepad2, robot);
+
+            telemetry.addData("mão - posição:", robot.servoMão.getPosition());
+            telemetry.addData("mão - direção:", robot.servoMão.getDirection());
+
+            telemetry.addData("garraA - posição", robot.servoGarraA.getPosition());
+            telemetry.addData("garraB - posição", robot.servoGarraB.getPosition());
+            telemetry.update();
         }
     }
 }

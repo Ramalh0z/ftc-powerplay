@@ -13,7 +13,7 @@ import org.firstinspires.ftc.teamcode.utils.RobotLogger;
 
 import java.util.List;
 
-@Disable
+@Disabled
 @TeleOp(name="TESTBOT", group = "Test")
 public class FTC_TESTBOT extends LinearOpMode {
 

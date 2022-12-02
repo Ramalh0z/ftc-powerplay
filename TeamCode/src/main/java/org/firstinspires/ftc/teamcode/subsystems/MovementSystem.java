@@ -3,6 +3,7 @@ package org.firstinspires.ftc.teamcode.subsystems;
 import com.qualcomm.robotcore.hardware.Gamepad;
 
 import org.firstinspires.ftc.teamcode.hardware.DestemidosHardware;
+import org.firstinspires.ftc.teamcode.hardware.RobotConfiguration;
 import org.firstinspires.ftc.teamcode.hardware.RobotConstants;
 
 /*
@@ -38,9 +39,9 @@ public final class MovementSystem {
     // extremamente didático do Gavin Ford: https://youtu.be/gnSW2QpkGXQ
     public static void controleOmnidirecionalClassico(Gamepad driver, DestemidosHardware robot)
     {
-        double joystick_y  = -driver.left_stick_y;
-        double joystick_x  = -driver.left_stick_x * RobotConstants.kCorretorJoystickX;
-        double giro        = -driver.right_stick_x;
+        double joystick_y  = -driver.left_stick_y  * RobotConfiguration.usoDasRodas;
+        double joystick_x  = -driver.left_stick_x  * RobotConfiguration.usoDasRodas; //* RobotConstants.kCorretorJoystickX;
+        double giro        = -driver.right_stick_x * RobotConfiguration.usoDasRodas;
 
         // o denominador sempre será a maior força (valor absoluto) entre os 4 motores, ou equivalente a 1.
         // isso permite que todos mantenham a mesma taxa, mesmo que um motor ultrapasse os limites [-1, 1]
