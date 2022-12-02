@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.test;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -17,6 +18,7 @@ import org.firstinspires.ftc.teamcode.subsystems.MovementSystem;
  */
 
 @TeleOp(name = "TestSensorIMU", group = "Test")
+@Disabled
 public class TestSensorIMU extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {

@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.teleop;
 
 import com.qualcomm.hardware.lynx.LynxModule;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -11,6 +12,7 @@ import org.firstinspires.ftc.teamcode.utils.RobotLogger;
 import java.util.List;
 
 @TeleOp(name = "FTC_3", group = "TeleOps")
+@Disabled
 public class FTC_3 extends OpMode {
     private final DcMotorEx[] motors = new DcMotorEx[4];
     private final DcMotorEx[] atuadores = new DcMotorEx[3];
