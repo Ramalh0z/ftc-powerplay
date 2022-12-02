@@ -12,7 +12,7 @@ public final class GripSystem {
         // segurar o cone
         double garraA_position;
         double garraB_position;
-        if (player2.x) {
+        if (player2.right_bumper) {
             garraA_position = RobotConfiguration.posiçãoGarraA_Fechada;
             garraB_position = RobotConfiguration.posiçãoGarraB_Fechada;
 

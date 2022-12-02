@@ -12,7 +12,7 @@ public final class ArmSystem {
         // Gira a base do robô
         robot.motorCentro.setPower(-driver.right_stick_x * RobotConfiguration.usoDoMotorCentro);
 
-        double controlPower = -driver.left_stick_y * RobotConfiguration.usoDasGarras;
+        double controlPower = driver.left_stick_y; //* RobotConfiguration.usoDasGarras;
         robot.motorBraçoA.setPower(controlPower);
         robot.motorBraçoB.setPower(controlPower);
 
