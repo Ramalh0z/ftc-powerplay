@@ -20,10 +20,13 @@ import org.firstinspires.ftc.teamcode.subsystems.MovementSystem;
 @TeleOp(name = "TestSensorIMU", group = "Test")
 @Disabled
 public class TestSensorIMU extends LinearOpMode {
+    private DestemidosHardware robot;
+    private BNO055IMU sensorIMU;
+
     @Override
     public void runOpMode() throws InterruptedException {
-        DestemidosHardware robot = new DestemidosHardware(hardwareMap);
-        BNO055IMU sensorIMU = hardwareMap.get(BNO055IMU.class, "imu");
+        robot = new DestemidosHardware(hardwareMap);
+        sensorIMU = hardwareMap.get(BNO055IMU.class, "imu");
 
         // configurando o sensorIMU
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
@@ -38,11 +41,8 @@ public class TestSensorIMU extends LinearOpMode {
 
         waitForStart();
         while(opModeIsActive()) {
-            // utilizamos o controle padrão de jogo sem a garra
             MovementSystem.controleOmnidirecionalClassico(gamepad1, robot);
 
-            // enviando tudo para a telemetria
-            telemetry.addData("Sensor IMU Status: ", sensorIMU.getSystemStatus());
             telemetry.addData("Sensor IMU - AngularOrientation: ", sensorIMU.getAngularOrientation());
             telemetry.addData("Sensor IMU - AngularVelocity: ", sensorIMU.getAngularVelocity());
             telemetry.addData("Sensor IMU - Acceletarion: ", sensorIMU.getAcceleration());
