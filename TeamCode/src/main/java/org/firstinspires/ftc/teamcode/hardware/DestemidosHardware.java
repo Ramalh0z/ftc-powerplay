@@ -1,12 +1,17 @@
 package org.firstinspires.ftc.teamcode.hardware;
 
+import android.graphics.Color;
+
 import androidx.annotation.NonNull;
 
+import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
+
+import java.util.List;
 
 /*
  * (ramalho): escolhi usar o array de motores pela
@@ -28,6 +33,11 @@ import com.qualcomm.robotcore.hardware.Servo;
 
 // NOTE(ramalho): deixei esse nome, pq já tinha uma classe "robot hardware" nos exemplos
 public class DestemidosHardware {
+
+    // lista com todos os hubs e seus IDs para fácil acesso
+    private List<LynxModule> allHubs;
+    private static final int CONTROLHUB_ID = 0;
+    private static final int EXPANSIONHUB_ID = 0;
 
     // Rodas
     public DcMotorEx motorDireitaFrente;
@@ -53,6 +63,12 @@ public class DestemidosHardware {
     public DestemidosHardware(@NonNull HardwareMap hardwareMap){
 
         // mapeando os motores com seus nomes e sequência correta
+        allHubs = hardwareMap.getAll(LynxModule.class);
+
+        // uma frescurinha que descobri no dia do intersesi
+        allHubs.get(CONTROLHUB_ID).setConstant(Color.CYAN);
+        allHubs.get(EXPANSIONHUB_ID).setConstant(Color.CYAN);
+
         motorDireitaFrente  = hardwareMap.get(DcMotorEx.class,"DF"); // porta 0 - controlHub
         motorDireitaTras    = hardwareMap.get(DcMotorEx.class,"DT"); // porta 1 - controlHub
         motorEsquerdaFrente = hardwareMap.get(DcMotorEx.class,"EF"); // porta 3 - expansion
@@ -87,7 +103,8 @@ public class DestemidosHardware {
                 motorEsquerdaTras,
                 motorCentro,
                 motorBraçoA,
-                motorBraçoB);
+                motorBraçoB
+        );
 
         // ativando por padrão todos os encoders
         configEncoders(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER,
@@ -97,7 +114,8 @@ public class DestemidosHardware {
                 motorEsquerdaTras,
                 motorCentro,
                 motorBraçoA,
-                motorBraçoB);
+                motorBraçoB
+        );
 
         // comportamento dos motores, quando a força for equivalente 0:
         configZeroPowerBehavior(
@@ -141,4 +159,16 @@ public class DestemidosHardware {
         motorEsquerdaFrente.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         motorEsquerdaTras.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
     }
+
+    public void setBulkReadToAuto() {
+        for (LynxModule robotHub : allHubs) {
+            robotHub.setBulkCachingMode(LynxModule.BulkCachingMode.AUTO);
+        }
+    }
+
+    public void setBulkCacheToManual() {
+        for (LynxModule robotHub : allHubs) {
+            robotHub.setBulkCachingMode(LynxModule.BulkCachingMode.MANUAL);
+        }
+    };
 }
