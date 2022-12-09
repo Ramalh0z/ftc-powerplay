@@ -4,12 +4,18 @@ import android.graphics.Color;
 
 import androidx.annotation.NonNull;
 
+import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.hardware.lynx.LynxModule;
+import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.IMU;
+import com.qualcomm.robotcore.hardware.ImuOrientationOnRobot;
 import com.qualcomm.robotcore.hardware.Servo;
+
+import org.firstinspires.ftc.robotcore.external.navigation.Quaternion;
 
 import java.util.List;
 
@@ -55,6 +61,9 @@ public class DestemidosHardware {
     public Servo servoGarraA;
     public Servo servoGarraB;
 
+    // Sensores
+    public IMU sennnsorIMU;
+    private IMU.Parameters parametrosDoIMU;
 
     // utilitário
     public DcMotorEx[] motores;
@@ -68,6 +77,21 @@ public class DestemidosHardware {
         // uma frescurinha que descobri no dia do intersesi
         allHubs.get(CONTROLHUB_ID).setConstant(Color.CYAN);
         allHubs.get(EXPANSIONHUB_ID).setConstant(Color.CYAN);
+
+        // configurando o sensor IMU
+        parametrosDoIMU = new IMU.Parameters(
+                // NOTE (ramalho): aqui é de acordo com a posição que colocamos o hub no robô
+                // então é mais provável variar a direção das entradas USB nas futuras modificações do robô
+                // referências: https://ftc-docs.firstinspires.org/programming_resources/imu/imu.html
+
+                new RevHubOrientationOnRobot(
+                        RevHubOrientationOnRobot.LogoFacingDirection.UP,
+                        RevHubOrientationOnRobot.UsbFacingDirection.LEFT
+                )
+        );
+
+        // configurando o resto do hardware
+        sennnsorIMU = hardwareMap.get(IMU.class, "imu");
 
         motorDireitaFrente  = hardwareMap.get(DcMotorEx.class,"DF"); // porta 0 - controlHub
         motorDireitaTras    = hardwareMap.get(DcMotorEx.class,"DT"); // porta 1 - controlHub
@@ -132,6 +156,8 @@ public class DestemidosHardware {
 
         atuadores = new DcMotorEx[] {motorCentro, motorBraçoA, motorBraçoB };
 
+        // carregando as configurações no IMU
+        sennnsorIMU.initialize(parametrosDoIMU);
     }
 
     public void configEncoders(DcMotor.RunMode runMode, @NonNull DcMotorEx... motores) {

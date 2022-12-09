@@ -2,6 +2,9 @@ package org.firstinspires.ftc.teamcode.subsystems;
 
 import com.qualcomm.robotcore.hardware.Gamepad;
 
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.teamcode.hardware.DestemidosHardware;
 import org.firstinspires.ftc.teamcode.hardware.RobotConfiguration;
 import org.firstinspires.ftc.teamcode.hardware.RobotConstants;
@@ -98,6 +101,35 @@ public final class MovementSystem {
         robot.motorDireitaFrente.setPower(v2);
         robot.motorEsquerdaTras.setPower(v3);
         robot.motorDireitaTras.setPower(v4);
+    }
+
+    // um controle que sempre direciona o robô para onde apontamos no joystick, independente
+    // da orentação do robô na arena
+    public static void controleFieldOriented(Gamepad driver, DestemidosHardware robot) {
+        double joystick_y  = -driver.left_stick_y  * RobotConfiguration.usoDasRodas;
+        double joystick_x  = -driver.left_stick_x  * RobotConfiguration.usoDasRodas; //* RobotConstants.kCorretorJoystickX;
+        double giro        = -driver.right_stick_x * RobotConfiguration.usoDasRodas;
+
+        double botHeading = robot.sennnsorIMU.getRobotOrientation(
+                AxesReference.INTRINSIC,
+                AxesOrder.XYZ,
+                AngleUnit.RADIANS
+        ).firstAngle;
+
+        double rotationX = joystick_x * Math.cos(botHeading) - joystick_y * Math.sin(botHeading);
+        double rotationY = joystick_x * Math.sin(botHeading) + joystick_y * Math.cos(botHeading);
+
+        double denominador = Math.max( Math.abs(joystick_y) + Math.abs(joystick_x) + Math.abs(giro), 1);
+
+        double direitaFrentePower   = (rotationY - rotationX - giro) / denominador;
+        double direitaTrasPower     = (rotationY + rotationX - giro) / denominador;
+        double esquerdaFrentePower  = (rotationY + rotationX + giro) / denominador;
+        double esquerdaTrasPower    = (rotationY - rotationX + giro) / denominador;
+
+        robot.motorDireitaFrente.setPower(direitaFrentePower);
+        robot.motorDireitaTras.setPower(direitaTrasPower);
+        robot.motorEsquerdaFrente.setPower(esquerdaFrentePower);
+        robot.motorEsquerdaTras.setPower(esquerdaTrasPower);
     }
 
 }
