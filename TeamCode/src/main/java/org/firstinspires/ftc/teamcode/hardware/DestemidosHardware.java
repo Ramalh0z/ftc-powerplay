@@ -62,7 +62,7 @@ public class DestemidosHardware {
     public Servo servoGarraB;
 
     // Sensores
-    public IMU sennnsorIMU;
+    public IMU sensorIMU;
     private IMU.Parameters parametrosDoIMU;
 
     // utilitário
@@ -91,7 +91,7 @@ public class DestemidosHardware {
         );
 
         // configurando o resto do hardware
-        sennnsorIMU = hardwareMap.get(IMU.class, "imu");
+        sensorIMU = hardwareMap.get(IMU.class, "imu");
 
         motorDireitaFrente  = hardwareMap.get(DcMotorEx.class,"DF"); // porta 0 - controlHub
         motorDireitaTras    = hardwareMap.get(DcMotorEx.class,"DT"); // porta 1 - controlHub
@@ -157,7 +157,7 @@ public class DestemidosHardware {
         atuadores = new DcMotorEx[] {motorCentro, motorBraçoA, motorBraçoB };
 
         // carregando as configurações no IMU
-        sennnsorIMU.initialize(parametrosDoIMU);
+        sensorIMU.initialize(parametrosDoIMU);
     }
 
     public void configEncoders(DcMotor.RunMode runMode, @NonNull DcMotorEx... motores) {

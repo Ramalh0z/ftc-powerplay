@@ -1,13 +1,23 @@
 package org.firstinspires.ftc.teamcode.test;
 
+import android.graphics.drawable.GradientDrawable;
+
 import com.acmerobotics.dashboard.FtcDashboard;
 import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.hardware.bosch.BNO055IMU;
+import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.IMU;
 
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AngularVelocity;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 import org.firstinspires.ftc.teamcode.hardware.DestemidosHardware;
 import org.firstinspires.ftc.teamcode.subsystems.MovementSystem;
 
@@ -23,33 +33,38 @@ import org.firstinspires.ftc.teamcode.subsystems.MovementSystem;
 @Disabled
 public class TestSensorIMU extends LinearOpMode {
     private DestemidosHardware robot;
-    private BNO055IMU sensorIMU;
 
     @Override
     public void runOpMode() throws InterruptedException {
         robot = new DestemidosHardware(hardwareMap);
-        sensorIMU = hardwareMap.get(BNO055IMU.class, "imu");
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
-
-        // configurando o sensorIMU
-        BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
-        parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
-        parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
-        parameters.angleUnit = BNO055IMU.AngleUnit.RADIANS;
-        parameters.loggingEnabled = true;
-        parameters.loggingTag = "Sensor IMU: ";
-
-        // carragando tudo isso
-        sensorIMU.initialize(parameters);
 
         waitForStart();
         while(opModeIsActive()) {
             MovementSystem.controleOmnidirecionalClassico(gamepad1, robot);
 
-            telemetry.addData("Sensor IMU - AngularOrientation: ", sensorIMU.getAngularOrientation());
-            telemetry.addData("Sensor IMU - AngularVelocity: ", sensorIMU.getAngularVelocity());
-            telemetry.addData("Sensor IMU - Acceletarion: ", sensorIMU.getAcceleration());
-            telemetry.addData("Sensor IMU - Position: ", sensorIMU.getPosition());
+            // pegando informações do imu
+            Orientation robotOrientation = robot.sensorIMU.getRobotOrientation(
+                    AxesReference.INTRINSIC,
+                    AxesOrder.XYZ,
+                    AngleUnit.DEGREES
+            );
+
+            AngularVelocity robotAngVel = robot.sensorIMU.getRobotAngularVelocity(AngleUnit.DEGREES);
+
+            YawPitchRollAngles robotAngles = robot.sensorIMU.getRobotYawPitchRollAngles();
+
+            telemetry.addData("Sensor IMU - Velocidade Angular: ", robotAngVel);
+            telemetry.addData("Sensor IMU - Orientação em Graus: ", "X: %d / Y: %d / Z: %d",
+                    robotOrientation.firstAngle,
+                    robotOrientation.secondAngle,
+                    robotOrientation.thirdAngle
+            );
+            telemetry.addData("Sensor IMU - Ângulo das Rotações: ", "Yaw: %d / Pitch: %d / Row: %d",
+                    robotAngles.getYaw(AngleUnit.DEGREES),
+                    robotAngles.getPitch(AngleUnit.DEGREES),
+                    robotAngles.getRoll(AngleUnit.DEGREES)
+            );
         }
     }
 }
