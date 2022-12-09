@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.teleop;
 
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.hardware.lynx.LynxModule;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -11,8 +13,6 @@ import org.firstinspires.ftc.teamcode.subsystems.MovementSystem;
 import org.firstinspires.ftc.teamcode.hardware.DestemidosHardware;
 import org.firstinspires.ftc.teamcode.utils.RobotLogger;
 
-import java.util.List;
-
 @Disabled
 @TeleOp(name="TESTBOT", group = "Test")
 public class FTC_TESTBOT extends LinearOpMode {
@@ -22,15 +22,11 @@ public class FTC_TESTBOT extends LinearOpMode {
 
         // setup the hardware components
         DestemidosHardware robot = new DestemidosHardware(hardwareMap);
-        List<LynxModule> hubs = hardwareMap.getAll(LynxModule.class);
-
-        //telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
+        telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
         waitForStart();
         while(opModeIsActive()) {
-            for (LynxModule hub: hubs){
-                hub.setBulkCachingMode(LynxModule.BulkCachingMode.AUTO);
-            }
+            robot.setBulkReadToAuto();
 
             // movimentação padrão das partidas
             MovementSystem.controleOmnidirecionalClassico(gamepad1, robot);

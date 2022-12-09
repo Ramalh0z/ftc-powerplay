@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.test;
 
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -22,6 +24,7 @@ public class TestPIDF extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         robot = new DestemidosHardware(hardwareMap);
         controller = new PIDController(kP, kI, kD);
+        telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
         waitForStart();
 

@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.teamcode.test;
 
+import com.acmerobotics.dashboard.FtcDashboard;
+import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.hardware.bosch.JustLoggingAccelerationIntegrator;
@@ -27,6 +29,7 @@ public class TestSensorIMU extends LinearOpMode {
     public void runOpMode() throws InterruptedException {
         robot = new DestemidosHardware(hardwareMap);
         sensorIMU = hardwareMap.get(BNO055IMU.class, "imu");
+        telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
         // configurando o sensorIMU
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
